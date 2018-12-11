@@ -1,28 +1,60 @@
-# --- Part One ---
+require 'benchmark'
+require 'set'
 
-frequency = 0
-result = []
-
-File.open('input.txt').each do |line|
-  frequency += line.to_i
-end
-
-puts frequency
-
-# --- Part Two ---
-
-frequency = 0
-result = []
-found = false
-
-until found
+def part_one
+  frequency = 0
   File.open('input.txt').each do |line|
     frequency += line.to_i
-    if result.include?(frequency)
-      found = true
-      break
+  end
+  puts frequency
+end
+
+# ! takes about 48 seconds !!!
+def part_two
+  frequency = 0
+  result = []
+  found = false
+  until found
+    File.open('input.txt').each do |line|
+      frequency += line.to_i
+      if result.include?(frequency)
+        found = true
+        break
+      end
+      result << frequency
     end
-    result << frequency
+  end
+  puts frequency
+end
+
+# ruby solutions taken from https://www.reddit.com/r/adventofcode/comments/a20646/2018_day_1_solutions/
+# ! takes about 0.07 seconds !!!
+def day_1_a
+  data = File.readlines('input.txt').map(&:to_i)
+
+  freq = 0
+  seen = Set.new
+  data.cycle do |num|
+    freq += num
+    (puts freq; break) unless seen.add?(freq)
   end
 end
-puts frequency
+
+# ! takes about 0.07 seconds !!!
+def day_1_b
+  data = File.readlines('input.txt').map(&:to_i)
+
+  freq = 0
+  seen = Set.new
+  data.cycle do |num|
+    freq += num
+    (puts freq; break) if seen.include?(freq)
+    seen.add(freq)
+  end
+end
+
+Benchmark.bm do |bm|
+  #bm.report { part_two }
+  bm.report { day_1_a }
+  bm.report { day_1_b }
+end
