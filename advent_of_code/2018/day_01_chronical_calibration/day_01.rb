@@ -10,6 +10,7 @@ def part_one
 end
 
 # ! takes about 48 seconds !!!
+# TODO : a lot!!!
 def part_two
   frequency = 0
   result = []
@@ -28,6 +29,7 @@ def part_two
 end
 
 # ruby solutions taken from https://www.reddit.com/r/adventofcode/comments/a20646/2018_day_1_solutions/
+# using the set class
 # ! takes about 0.07 seconds !!!
 def day_1_a
   data = File.readlines('input.txt').map(&:to_i)
@@ -54,7 +56,7 @@ def day_1_b
 end
 
 Benchmark.bm do |bm|
-  #bm.report { part_two }
+  bm.report { part_two }
   bm.report { day_1_a }
   bm.report { day_1_b }
 end
